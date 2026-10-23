@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CLIO 更新日志 · V1.1.0</title>
+<style>
+  :root{
+    --paper:#F7F8FA; --card:#FFFFFF;
+    --ink:#16212B; --ink-2:#44535F; --ink-3:#7C8B98;
+    --rule:#DCE3E9; --rule-soft:#EBEFF3;
+    --celadon:#2E7C99; --celadon-soft:#E8F2F6;
+    --seal:#B23A38; --seal-soft:#FBEDEC;
+    --font:'Segoe UI Variable Text','Segoe UI',-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei UI','Microsoft YaHei','Source Han Sans SC',sans-serif;
+    --display:'Segoe UI Variable Display','Segoe UI',-apple-system,'PingFang SC','Microsoft YaHei UI','Microsoft YaHei',sans-serif;
+    --mono:'Cascadia Code','JetBrains Mono','Consolas','SFMono-Regular',monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:var(--font);font-size:16px;line-height:1.75;
+    -webkit-font-smoothing:antialiased;padding:0 24px 100px;
+  }
+  ::selection{background:#CFE6EE}
+  :focus-visible{outline:2px solid var(--celadon);outline-offset:3px;border-radius:3px}
+  .wrap{max-width:1000px;margin:0 auto}
+
+  /* ── 报头 ── */
+  .masthead{padding:58px 0 34px}
+  .kicker{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:10px}
+  .kicker .dot{width:6px;height:6px;border-radius:50%;background:var(--celadon)}
+  h1{font-family:var(--display);font-size:clamp(2rem,5.4vw,3.4rem);font-weight:650;letter-spacing:-.025em;line-height:1.1;margin:16px 0 0}
+  .standfirst{font-size:1.02rem;color:var(--ink-2);max-width:48ch;margin:14px 0 0;line-height:1.7}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:22px 0 0;font-size:.78rem;color:var(--ink-3)}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .legend i{width:14px;height:2.5px;border-radius:2px;display:inline-block}
+  .legend .a i{background:var(--celadon)}
+  .legend .b i{background:var(--seal)}
+
+  /* ── 两栏：左小日历 / 右内容 ── */
+  .layout{display:grid;grid-template-columns:104px 1fr;gap:46px;align-items:start}
+  @media (max-width:760px){
+    .layout{grid-template-columns:1fr;gap:20px}
+    .cal{position:static!important;display:flex;flex-wrap:wrap;gap:8px}
+    .cal .hint{display:none}
+  }
+
+  /* ══ 小日历 ══ */
+  .cal{position:sticky;top:24px}
+  .cal .hint{
+    font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-3);padding-left:2px;margin-bottom:9px;
+  }
+  .cal a{
+    display:block;position:relative;text-decoration:none;color:inherit;
+    background:var(--card);border:1px solid var(--rule);border-radius:9px;
+    padding:8px 9px 9px;margin-bottom:9px;
+    transition:border-color .15s,background .15s,transform .12s,box-shadow .15s;
+  }
+  .cal a:hover{border-color:var(--celadon);background:var(--celadon-soft);transform:translateY(-1px);box-shadow:0 3px 10px rgba(22,33,43,.07)}
+  .cal a .ym{display:block;font-family:var(--mono);font-size:.6rem;color:var(--ink-3);letter-spacing:.04em}
+  .cal a .d{display:block;font-family:var(--display);font-size:1.6rem;font-weight:650;line-height:1.15;letter-spacing:-.02em;color:var(--ink);margin-top:-1px}
+  .cal a .v{
+    display:block;font-family:var(--mono);font-size:.66rem;font-weight:700;margin-top:3px;
+    padding-top:5px;border-top:1px solid var(--rule-soft);color:var(--ink-3);
+  }
+  .cal a.on{border-color:var(--celadon);background:var(--celadon-soft)}
+  .cal a.on .d{color:var(--celadon)}
+  .cal a.on .v{color:var(--celadon);border-top-color:#C9E0E9}
+  .cal a.on::before{
+    content:'';position:absolute;left:-1px;top:12px;bottom:12px;width:2.5px;
+    border-radius:0 2px 2px 0;background:var(--celadon);
+  }
+
+  /* ══ 右侧：版本块 ══ */
+  .ver{padding-bottom:8px;scroll-margin-top:24px}
+  .ver-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+  .ver-h .no{font-family:var(--mono);font-size:1.55rem;font-weight:700;color:var(--celadon);letter-spacing:-.015em;line-height:1}
+  .ver-h .ti{font-family:var(--display);font-size:1.05rem;font-weight:650;letter-spacing:-.005em}
+  .ver-h .dt{margin-left:auto;font-family:var(--mono);font-size:.72rem;color:var(--ink-3)}
+
+  .blk{margin-bottom:26px}
+  .blk:last-child{margin-bottom:0}
+  .blk-h{
+    display:flex;align-items:center;gap:9px;margin-bottom:12px;
+    font-family:var(--display);font-size:.95rem;font-weight:650;letter-spacing:.01em;
+  }
+  .blk-h::before{content:'';width:16px;height:2.5px;border-radius:2px;background:var(--celadon);flex-shrink:0}
+  .blk.fix .blk-h{color:var(--seal)}
+  .blk.fix .blk-h::before{background:var(--seal)}
+
+  ul{list-style:none}
+  li{position:relative;padding-left:16px;margin-bottom:11px;font-size:.89rem;line-height:1.72;color:var(--ink-2)}
+  li:last-child{margin-bottom:0}
+  li::before{content:'';position:absolute;left:0;top:.68em;width:5px;height:5px;border-radius:50%;background:#C6D2DA}
+  .blk.fix li::before{background:color-mix(in srgb,var(--seal) 45%,#fff)}
+  li b{color:var(--ink);font-weight:650}
+  code{font-family:var(--mono);font-size:.85em;background:#EEF2F5;border:1px solid var(--rule-soft);padding:1px 5px;border-radius:4px;color:#22323E}
+
+  .end{margin-top:60px;padding-top:20px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-family:var(--mono);font-size:.72rem;color:var(--ink-3)}
+
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} *{transition:none!important;animation:none!important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="kicker"><span class="dot"></span>更新日志 &nbsp;·&nbsp; CLIO之卷</div>
+    <h1>书架、录像带与收藏<br>V1.1.0 改了什么</h1>
+    <p class="standfirst">本次把「摘录」改造成书架，接上书摘的划线收藏，并新增按标签晾晒的录像带。下面是精简归纳。</p>
+    <div class="legend">
+      <span class="a"><i></i>新增 / 改版</span>
+      <span class="b"><i></i>修复 / 兼容</span>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <!-- ══ 小日历 ══ -->
+    <nav class="cal" id="cal">
+      <div class="hint">日期 · 版本</div>
+      <a href="#v110" class="on">
+        <span class="ym">2026 · 10</span>
+        <span class="d">23</span>
+        <span class="v">V1.1.0</span>
+      </a>
+    </nav>
+
+    <!-- ══ 内容 ══ -->
+    <main>
+
+      <section class="ver" id="v110">
+        <div class="ver-h">
+          <span class="no">V1.1.0</span>
+          <span class="ti">书架 · 录像带 · 划线收藏</span>
+          <span class="dt">2026-10-23</span>
+        </div>
+
+        <div class="blk">
+          <div class="blk-h">📚 书架</div>
+          <ul>
+            <li><b>摘录 → 书架</b>：每个分类是一本书，书的目录就是备注；书脊墙点进书内。</li>
+            <li><b>旧数据自动迁移</b>：旧分组变书、旧标题变备注；<code>clio_excerpts.json</code> 保留作备份。</li>
+            <li><b>删书不丢内容</b>：书里的目录移到第一本书；内置书可改名、删除。</li>
+            <li><b>书目小按钮</b>：收藏/编辑时一排小按钮选书，末尾 ＋ 可当场新建书名。</li>
+          </ul>
+        </div>
+
+        <div class="blk">
+          <div class="blk-h">★ 划线收藏</div>
+          <ul>
+            <li><b>书摘浮条新增「★ 收藏」</b>：星号在上、文字在下；划中文字即可收藏。</li>
+            <li><b>统一收藏弹窗</b>：存书架或录像带；备注、多个标签、来源角色卡均可选。</li>
+            <li><b>聊天存档的 ☆ 收藏</b>也走同一弹窗；没装书摘时静默降级。</li>
+          </ul>
+        </div>
+
+        <div class="blk">
+          <div class="blk-h">🎞 录像带</div>
+          <ul>
+            <li><b>照片晾晒</b>：按标签分行，标签钉在右侧；标签下方 ← → 控制左右滑动。</li>
+            <li><b>真实 HTML 渲染</b>：沙盒 iframe 渲染番外；900×1200 固定画布等比缩放，详情按内容高度适配；可切代码。</li>
+            <li><b>番外指令共享</b>：存在书架条目上，录像带读写同一段；支持复制、跳转并高亮对应目录。</li>
+            <li><b>顶部搜索 + 新建</b>；标签列缩窄到 36px，单行更紧凑。</li>
+          </ul>
+        </div>
+
+        <div class="blk">
+          <div class="blk-h">🔍 捕获与正则</div>
+          <ul>
+            <li><b>捕获当前 HTML</b>：HTML 取最新一条 char 回复（已渲染 DOM；代码块取源码），番外指令取最新一条 user 回复。</li>
+            <li><b>正则一并收录</b>：角色专属 + 全局正则列成小按钮，默认全选，可逐条手动取消；只保存勾选的。</li>
+          </ul>
+        </div>
+
+        <div class="blk fix">
+          <div class="blk-h">🧩 细节与修复</div>
+          <ul>
+            <li><b>标签栏可直接新建</b>：标签改成小按钮；末尾 ＋ 新建后立刻出现。</li>
+            <li><b>栏目改名</b>：底部「摘录」改为「书架」，旧偏好自动映射；数据文件新增 <code>clio_shelf.json</code>、<code>clio_tapes.json</code>。</li>
+            <li><b>录像带正文改用 <code>.html.txt</code></b>：酒馆禁止上传 <code>.html</code>（会返回 400），内容仍是原样 HTML。</li>
+            <li><b>数据安全</b>：书架/录像带读写仍走队列；读失败不写盘；旧文件不删不覆盖。</li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="end">
+    <span>CLIO之卷 · 更新日志</span>
+    <span>V1.1.0 · 2026-10-23 · 简舒然</span>
+  </footer>
+</div>
+</body>
+</html>

@@ -3,8 +3,8 @@
   "loading_order": 110,
   "requires": [],
   "optional": [],
-  "js": "index.js?v=20261021112350",
+  "js": "index.js?v=20261023134441",
   "css": "",
   "author": "简舒然",
-  "version": "V1.0.2"
+  "version": "V1.1.0"
 }
