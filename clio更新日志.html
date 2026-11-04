@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>CLIO 更新日志 · V1.1.0</title>
+<title>CLIO 更新日志 · V1.1.3</title>
 <style>
   :root{
     --paper:#F7F8FA; --card:#FFFFFF;
@@ -108,8 +108,8 @@
 
   <header class="masthead">
     <div class="kicker"><span class="dot"></span>更新日志 &nbsp;·&nbsp; CLIO之卷</div>
-    <h1>书架、录像带与收藏<br>V1.1.0 改了什么</h1>
-    <p class="standfirst">本次把「摘录」改造成书架，接上书摘的划线收藏，并新增按标签晾晒的录像带。下面是精简归纳。</p>
+    <h1>同步修复与聊天绑定<br>V1.1.3 改了什么</h1>
+    <p class="standfirst">本次修复「推卡进酒馆」与「世界书同步」的锚点错位，卡与世界书终于能正确落到酒馆；卡详情的全局正则可以原地启用/禁用，聊天记录也能看到当时用的预设、API 与正则。下面是精简归纳。</p>
     <div class="legend">
       <span class="a"><i></i>新增 / 改版</span>
       <span class="b"><i></i>修复 / 兼容</span>
@@ -121,7 +121,17 @@
     <!-- ══ 小日历 ══ -->
     <nav class="cal" id="cal">
       <div class="hint">日期 · 版本</div>
-      <a href="#v110" class="on">
+      <a href="#v112" class="on">
+        <span class="ym">2026 · 11</span>
+        <span class="d">04</span>
+        <span class="v">V1.1.3</span>
+      </a>
+      <a href="#v111">
+        <span class="ym">2026 · 11</span>
+        <span class="d">03</span>
+        <span class="v">V1.1.1</span>
+      </a>
+      <a href="#v110">
         <span class="ym">2026 · 10</span>
         <span class="d">23</span>
         <span class="v">V1.1.0</span>
@@ -130,6 +140,118 @@
 
     <!-- ══ 内容 ══ -->
     <main>
+
+      <section class="ver" id="v112">
+        <div class="ver-h">
+          <span class="no">V1.1.3</span>
+          <span class="ti">同步修复 · 绑定信息 · 正则开关</span>
+          <span class="dt">2026-11-04</span>
+        </div>
+
+        <div class="blk fix">
+          <div class="blk-h">🧩 修复：推卡 / 世界书同步</div>
+          <ul>
+            <li><b>角色卡锚点补 <code>.png</code></b>：酒馆导入接口返回的 <code>file_name</code> 不带扩展名，V1.1.1 直接当锚点，导致世界书绑定静默失败、封面 404、聊天归档找不到卡。现在统一补全，并在启动时自动修复旧索引。</li>
+            <li><b>世界书用真实文件名</b>：酒馆写盘时会删掉 <code>/ : *</code> 等非法字符。现在写入后回读列表取真实 <code>file_id</code>，不再出现「酒馆里明明有、插件显示没进酒馆」和重复的「仅酒馆」副本。</li>
+            <li><b>绑定改用 file_id</b>：推卡时的角色世界书绑定、全局世界书选择都改用它，绑定真正落进酒馆。</li>
+          </ul>
+        </div>
+
+        <div class="blk">
+          <div class="blk-h">🎛 卡详情：全局正则可增减</div>
+          <ul>
+            <li>「全局正则」每条 chip 都可点按启用 / 禁用，图标与底色即时反映状态。</li>
+            <li>状态直接写回酒馆的全局正则设置，下一次生成立刻生效；展开分区时会重新读取当前设置。</li>
+          </ul>
+        </div>
+
+        <div class="blk">
+          <div class="blk-h">💬 聊天记录：绑定信息</div>
+          <ul>
+            <li>按顺序展示：<b>绑定的预设 → 绑定的 API → 绑定的世界书 → 聊天专属 → 正则 → 指令与录像带 → Mneme 记忆</b>。</li>
+            <li>七项全部只读、默认可折叠；折叠栏与卡详情同一套纯文字样式；聊天专属世界书形如「聊天专属：h梦模拟器」。</li>
+            <li>预设 / API / 正则只在归档那一刻抓快照；旧存档显示「未记录」或「当前设置」，不拿现在的值冒充历史。</li>
+          </ul>
+        </div>
+
+        <div class="blk">
+          <div class="blk-h">📚 世界书：分组切换与 Mneme 排除</div>
+          <ul>
+            <li><b>全局 / 角色卡切换</b>：搜索框下方最左侧、管理标签的左边新增胶囊切换，同一时间只看一组，交互与书架的「书架 / 录像带」一致。</li>
+            <li><b>Mneme 记忆书不收录</b>：名字以 <code>Mneme</code> 开头的世界书由 Mneme 管理，不再进书库与世界书列表；历史上误收的条目会在同步时自动从索引摘掉（本地副本文件保留）。</li>
+            <li>这些记忆书仍然通过聊天记录详情的「Mneme 记忆」分区与对应聊天联动显示。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="ver" id="v111">
+        <div class="ver-h">
+          <span class="no">V1.1.1</span>
+          <span class="ti">世界书导入 · 自动归档 · 本地备份</span>
+          <span class="dt">2026-11-03</span>
+        </div>
+
+        <div class="blk">
+          <div class="blk-h">📥 世界书与随书正则</div>
+          <ul>
+            <li><b>加号支持整包导入</b>：能识别角色卡、独立世界书、以及「世界书 + 正则」同文件的世界书包。</li>
+            <li><b>正则多位置探测</b>：兼容 <code>data.character_book</code>、顶层 <code>entries</code>、<code>extensions.regex_scripts</code>、顶层 <code>regex_scripts</code> / <code>regex</code>。</li>
+            <li><b>确认页预览</b>：显示书名、条目数、随书正则条数；可选是否同时写入酒馆与归属。</li>
+            <li><b>世界书详情</b>新增「随书正则」折叠区，可查看查找式、替换式与作用位置。</li>
+          </ul>
+        </div>
+
+        <div class="blk">
+          <div class="blk-h">🗂 卡详情重排</div>
+          <ul>
+            <li><b>一句话简介只读</b>：显示原作者 <code>creator_notes</code> 首句，不再允许编辑。</li>
+            <li><b>分区展示</b>：角色卡世界书、角色卡正则、全局世界书、全局正则、绑定面具。</li>
+            <li><b>默认折叠</b>：各分区小标题可点击展开/收起，默认全部收起；小标题旁保留编辑与 ＋ 添加按钮。</li>
+            <li><b>点开即详情</b>：世界书、正则、面具 chip 都能打开对应详情；全局世界书可用 ＋ 添加。</li>
+            <li><b>面具优先级</b>：单次聊天锁定的面具 &gt; 存档记录 &gt; 卡片默认面具。</li>
+          </ul>
+        </div>
+
+        <div class="blk">
+          <div class="blk-h">🗃 聊天存档与实时归档</div>
+          <ul>
+            <li><b>自动补齐</b>：打开卡详情时，把酒馆里缺失的聊天自动存成副本，不需要再手动「新建存档」。</li>
+            <li><b>备注直接改</b>：存档列表里的备注失焦即保存。</li>
+            <li><b>实时归档</b>：监听消息发送/收到/编辑/删除，防抖后更新当前聊天副本。</li>
+            <li><b>清单拆分</b>：存档清单存 <code>clio_arcindex_&lt;id&gt;.json</code>，避免每条消息重写整张卡 meta；读写走串行队列。</li>
+            <li><b>聊天详情</b>：日期、面具、世界书/正则 tag、书架指令与录像带联动、Mneme 记忆块；底部可继续游玩、导出纯文本 / 仅 char / 完整记录，聊天框固定高度可折叠滚动。</li>
+          </ul>
+        </div>
+
+        <div class="blk">
+          <div class="blk-h">🧠 Mneme（姆姆日记）联动</div>
+          <ul>
+            <li><b>记忆块</b>：显示 Mneme 世界书名、卷宗数、记忆条数、注入方式、卷宗上限、配置世界书与最近摘要。</li>
+            <li><b>一键跳转</b>：「在 Mneme 中打开」切到该聊天并尝试打开 Mneme 面板；找不到按钮会提示手动打开。</li>
+            <li><b>顶栏说明</b>：使用指南左侧新增大脑按钮，内含联动说明、仓库地址与本机安装命令。</li>
+          </ul>
+        </div>
+
+        <div class="blk">
+          <div class="blk-h">💾 本地存储库</div>
+          <ul>
+            <li><b>设置顶部新增「存储库」</b>：选择一个电脑文件夹，把数据额外镜像一份。</li>
+            <li><b>可选类别</b>：卡库、世界书、书架与录像带、聊天存档，逐项勾选。</li>
+            <li><b>实时镜像</b>：聊天存档在每次实时归档后同步写本地；其它类别可点「立即备份选中类别」。</li>
+            <li><b>权限提醒</b>：刷新页面后目录可能变成「需要重新授权」，设置里会提示并可重新授权。</li>
+          </ul>
+        </div>
+
+        <div class="blk fix">
+          <div class="blk-h">🧩 修复与兼容</div>
+          <ul>
+            <li><b>世界书同步改串行</b>：原来并发读取 23 本世界书会把页面主线程卡死；现在逐本读取，界面始终可响应。</li>
+            <li><b>唯一 id 上限</b>：世界书存储 id 分配加了 1000 次上限，哈希异常时直接报错而不是无限循环。</li>
+            <li><b>本地目录手势</b>：目录选择改用面板 iframe 的 window 调用，避免浏览器判定「没有用户手势」。</li>
+            <li><b>旧数据兼容</b>：老存档清单自动从 meta 迁移到新文件；老世界书没有随书正则时按空数组处理。</li>
+          </ul>
+        </div>
+      </section>
 
       <section class="ver" id="v110">
         <div class="ver-h">
@@ -191,7 +313,7 @@
 
   <footer class="end">
     <span>CLIO之卷 · 更新日志</span>
-    <span>V1.1.0 · 2026-10-23 · 简舒然</span>
+    <span>V1.1.3 · 2026-11-04 · 简舒然</span>
   </footer>
 </div>
 </body>
